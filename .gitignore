@@ -140,7 +140,8 @@ gradle-app.setting
 .classpath
 
 #minIO
-minio.exe
+executionFile/minio.exe
 data/**
+executionFile/Data/.**
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,gradle
