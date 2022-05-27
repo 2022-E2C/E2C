@@ -139,4 +139,8 @@ gradle-app.setting
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
+#minIO
+minio.exe
+data/**
+
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,gradle
