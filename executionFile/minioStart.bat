@@ -1,3 +1,2 @@
-:Start
-minio.exe server ./Data --console-address ":9001"
-@GOTO START
+executionFile\minio.exe server executionFile\data --console-address ":9001"
+exit
