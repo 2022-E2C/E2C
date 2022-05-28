@@ -2,6 +2,7 @@ package E2C.project.Service;
 
 import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -61,14 +62,14 @@ public class BootService {
             }
             try {
                 LOG.info("Running MinIO...");
-                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/executionFile/minioStart.sh");
+                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         try {
-            wait(3000);
+            Thread.sleep(3000);
             MinioClient minioClient =
                     MinioClient.builder()
                             .endpoint("http://localhost:9000")
@@ -94,6 +95,7 @@ public class BootService {
     }
 
     public void MinIOModuleTerminate() {
+        LOG.info("Terminating MinIO...");
         if(OsUtils.isWindows()){
             try {
                 Runtime.getRuntime().exec("cmd /c start .\\executionFile\\minioStop.bat");
@@ -103,7 +105,7 @@ public class BootService {
         }
         else{   //  OS: Linux or else
             try {
-                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/executionFile/minioStop.sh");
+                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStop.sh");
 //                Runtime.getRuntime().exec("sh -c ./executionFile/minioStart.sh");
 //                Runtime.getRuntime().exec("gnome-terminal -x ./executionFile/minioStop.sh");
 
