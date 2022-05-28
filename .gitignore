@@ -145,5 +145,7 @@ executionFile/Data/**
 
 #  key files
 src/main/resources/key/*.pem
+src/main/resources/minio.properties
+
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,gradle
