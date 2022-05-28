@@ -143,6 +143,8 @@ gradle-app.setting
 executionFile/**.exe
 executionFile/Data/**
 
+#  key files
+src/main/resources/key/*.pem
 src/main/resources/minio.properties
 
 
