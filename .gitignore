@@ -161,12 +161,12 @@ sketch
 
 
 #minIO
-executionFile/**.exe
-executionFile/Data/**
+backend/executionFile/**.exe
+backend/executionFile/Data/**
 
 #  key files
-src/main/resources/key/*.pem
-src/main/resources/minio.properties
+backend/src/main/resources/key/*.pem
+backend/src/main/resources/minio.properties
 
 
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij+all,gradle
