@@ -94,7 +94,7 @@ export const DashboardSidebar = (props) => {
           <Box sx={{ p: 3 }}>
             <NextLink href="/" passHref>
               <a>
-                <img src="../icons/minioLogo.jpg" />
+                <img src="../Icons" />
                 {/* <Logo
                   sx={{
                     height: 60,
