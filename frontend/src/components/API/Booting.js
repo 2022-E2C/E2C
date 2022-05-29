@@ -10,7 +10,7 @@ const minioBootClick = () => {
   axios.get("http://localhost:8080/boot");
 };
 
-export const Budget = (props) => (
+export const Boot = (props) => (
   <Card sx={{ height: "100%" }} {...props}>
     <CardContent>
       <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>

@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
-import { v4 as uuid } from 'uuid';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { format } from "date-fns";
+import { v4 as uuid } from "uuid";
+import PerfectScrollbar from "react-perfect-scrollbar";
 import {
   Box,
   Button,
@@ -12,128 +12,79 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Tooltip
-} from '@mui/material';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { SeverityPill } from '../severity-pill';
+  Tooltip,
+} from "@mui/material";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { SeverityPill } from "../severity-pill";
 
 const orders = [
   {
     id: uuid(),
-    ref: 'CDD1049',
+    ref: "test1",
     amount: 30.5,
     customer: {
-      name: 'Ekaterina Tankova'
+      name: "Sanghyun Park",
     },
     createdAt: 1555016400000,
-    status: 'pending'
+    Authority: "Read/Write",
   },
   {
     id: uuid(),
-    ref: 'CDD1048',
+    ref: "test2",
     amount: 25.1,
     customer: {
-      name: 'Cao Yu'
+      name: "HongGi Oh",
     },
     createdAt: 1555016400000,
-    status: 'delivered'
+    Authority: "Read/Write",
   },
   {
     id: uuid(),
-    ref: 'CDD1047',
+    ref: "test3",
     amount: 10.99,
     customer: {
-      name: 'Alexa Richardson'
+      name: "KangPark Kim",
     },
     createdAt: 1554930000000,
-    status: 'refunded'
+    Authority: "Read/Only",
   },
-  {
-    id: uuid(),
-    ref: 'CDD1046',
-    amount: 96.43,
-    customer: {
-      name: 'Anje Keizer'
-    },
-    createdAt: 1554757200000,
-    status: 'pending'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1045',
-    amount: 32.54,
-    customer: {
-      name: 'Clarke Gillebert'
-    },
-    createdAt: 1554670800000,
-    status: 'delivered'
-  },
-  {
-    id: uuid(),
-    ref: 'CDD1044',
-    amount: 16.76,
-    customer: {
-      name: 'Adam Denisov'
-    },
-    createdAt: 1554670800000,
-    status: 'delivered'
-  }
 ];
 
 export const LatestOrders = (props) => (
   <Card {...props}>
-    <CardHeader title="Latest Orders" />
+    <CardHeader title="Bucket List" />
     <PerfectScrollbar>
       <Box sx={{ minWidth: 800 }}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                Order Ref
-              </TableCell>
-              <TableCell>
-                Customer
-              </TableCell>
+              <TableCell>Bucket name</TableCell>
+              <TableCell>Object Number</TableCell>
               <TableCell sortDirection="desc">
-                <Tooltip
-                  enterDelay={300}
-                  title="Sort"
-                >
-                  <TableSortLabel
-                    active
-                    direction="desc"
-                  >
-                    Date
+                <Tooltip enterDelay={300} title="Sort">
+                  <TableSortLabel active direction="desc">
+                    created Date
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
-              <TableCell>
-                Status
-              </TableCell>
+              <TableCell>Access Authority</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((order) => (
-              <TableRow
-                hover
-                key={order.id}
-              >
-                <TableCell>
-                  {order.ref}
-                </TableCell>
-                <TableCell>
-                  {order.customer.name}
-                </TableCell>
-                <TableCell>
-                  {format(order.createdAt, 'dd/MM/yyyy')}
-                </TableCell>
+              <TableRow hover key={order.id}>
+                <TableCell>{order.ref}</TableCell>
+                <TableCell>{order.customer.name}</TableCell>
+                <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
                 <TableCell>
                   <SeverityPill
-                    color={(order.status === 'delivered' && 'success')
-                    || (order.status === 'refunded' && 'error')
-                    || 'warning'}
+                    color={
+                      (order.Authority === "Read/Write" && "success") ||
+                      (order.Authority === "Read/Only" && "warning") ||
+                      "error"
+                    }
                   >
-                    {order.status}
+                    {order.Authority}
                   </SeverityPill>
                 </TableCell>
               </TableRow>
@@ -144,9 +95,9 @@ export const LatestOrders = (props) => (
     </PerfectScrollbar>
     <Box
       sx={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        p: 2
+        display: "flex",
+        justifyContent: "flex-end",
+        p: 2,
       }}
     >
       <Button

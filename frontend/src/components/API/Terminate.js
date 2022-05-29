@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  Grid,
-  LinearProgress,
-  Typography,
-  Button,
-} from "@mui/material";
-import InsertChartIcon from "@mui/icons-material/InsertChartOutlined";
+import { Card, CardContent, Grid, Typography, Button } from "@mui/material";
 import SyncDisabledIcon from "@mui/icons-material/SyncDisabled";
 
 const axios = require("axios");
@@ -17,7 +7,7 @@ const minioTerminateClick = () => {
   axios.get("http://localhost:8080/terminate");
 };
 
-export const TasksProgress = (props) => (
+export const Terminate = (props) => (
   <Card sx={{ height: "100%" }} {...props}>
     <CardContent>
       <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
@@ -36,6 +26,7 @@ export const TasksProgress = (props) => (
                 // backgroundColor: "warning.main",
                 height: 50,
                 width: 45,
+                color: "red",
               }}
             ></SyncDisabledIcon>
           </Button>

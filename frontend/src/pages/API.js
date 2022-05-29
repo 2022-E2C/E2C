@@ -4,14 +4,17 @@ import { products } from "../__mocks__/products";
 import { ProductListToolbar } from "../components/product/product-list-toolbar";
 import { ProductCard } from "../components/product/product-card";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { Budget } from "../components/dashboard/budget";
-import { TotalCustomers } from "../components/dashboard/total-customers";
-import { TasksProgress } from "../components/dashboard/tasks-progress";
+import { Boot } from "../components/API/Booting";
+import { TotalCustomers } from "../components/API/total-customers";
+import { Terminate } from "../components/API/Terminate";
+import { MakeBucket } from "../components/API/MakeBucket";
+import { BucketUpload } from "../components/API/BucketUpload";
+import { SendToServer } from "../components/API/SendToServer";
 
-const Products = () => (
+const API = () => (
   <>
     <Head>
-      <title>Products | Material Kit</title>
+      <title>API | Material Kit</title>
     </Head>
     <Box
       component="main"
@@ -24,13 +27,19 @@ const Products = () => (
         <ProductListToolbar />
         <Grid container spacing={3}>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <Budget />
+            <Boot />
           </Grid>
           <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TotalCustomers />
+            <MakeBucket />
           </Grid>
           <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TasksProgress />
+            <BucketUpload />
+          </Grid>
+          <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <SendToServer />
+          </Grid>
+          <Grid item xl={3} lg={3} sm={6} xs={12}>
+            <Terminate />
           </Grid>
         </Grid>
         {/* <Box
@@ -47,6 +56,6 @@ const Products = () => (
   </>
 );
 
-Products.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
+API.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
-export default Products;
+export default API;

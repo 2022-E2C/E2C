@@ -28,7 +28,7 @@ const items = [
   //   title: 'Customers'
   // },
   {
-    href: "/products",
+    href: "/API",
     icon: <ShoppingBagIcon fontSize="small" />,
     title: "API",
   },
@@ -94,7 +94,7 @@ export const DashboardSidebar = (props) => {
           <Box sx={{ p: 3 }}>
             <NextLink href="/" passHref>
               <a>
-                <img src="../Icons" />
+                <img src="../icons/minioLogo.jpg" />
                 {/* <Logo
                   sx={{
                     height: 60,
