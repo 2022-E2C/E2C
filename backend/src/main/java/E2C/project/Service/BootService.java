@@ -63,9 +63,12 @@ public class BootService {
             try {
                 LOG.info("Running MinIO...");
                 Runtime.getRuntime().exec("gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
+                Thread.sleep(500);
                 Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -81,12 +84,16 @@ public class BootService {
         }
         else{   //  OS: Linux or else
             try {
+                Runtime.getRuntime().exec("gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStop.sh");
+                Thread.sleep(500);
                 Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStop.sh");
 //                Runtime.getRuntime().exec("sh -c ./executionFile/minioStart.sh");
 //                Runtime.getRuntime().exec("gnome-terminal -x ./executionFile/minioStop.sh");
 
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
     }
