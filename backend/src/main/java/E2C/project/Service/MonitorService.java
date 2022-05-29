@@ -8,7 +8,10 @@ import io.minio.Result;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -16,6 +19,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Logger;
 
+@Service
+@RequiredArgsConstructor
+@PropertySource(value = {"minio.properties"} )
 public class MonitorService {
 
     private final static Logger LOG = Logger.getGlobal();

@@ -62,6 +62,7 @@ public class BootService {
             }
             try {
                 LOG.info("Running MinIO...");
+                Runtime.getRuntime().exec("gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
                 Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
             } catch (IOException e) {
                 e.printStackTrace();
