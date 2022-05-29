@@ -1,6 +1,8 @@
 package E2C.project.Service;
 
+import io.minio.errors.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -8,7 +10,7 @@ import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.UploadObjectArgs;
-import io.minio.errors.MinioException;
+
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -28,17 +30,46 @@ public class BootService {
     private String password;
 
     public void MinIOModuleBoot(){
-        File file;
-        final String projectDataUrl = ".\\executionFile\\data";
-        file = new File(projectDataUrl);
-        if (!file.exists()) {
-            LOG.info("file doesn't exist");
-            file.mkdir();
+        File file = null;
+        final String projectDataUrl;
+        if (OsUtils.isWindows()) {
+            LOG.info("Operating System : Windows");
+            projectDataUrl = ".\\executionFile\\data";
+
+            try {
+                file = new File(projectDataUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (!file.exists()) {
+                LOG.info("file doesn't exist");
+                file.mkdir();
+            }
+            try {
+                Runtime.getRuntime().exec("cmd /c start .\\executionFile\\minioStart.bat");
+                // Create a minioClient with the MinIO server playground, its access key and secret key.
+
+            } catch (IOException e){
+                e.printStackTrace();
+            }
         }
+
+        else {  //  OS: Linux or else
+            if (OsUtils.isLinux()) {
+                LOG.info("Operating System : Linux");
+            } else {
+                LOG.info("Unexpected Operating System.\n Trying as Linux");
+            }
+            try {
+                LOG.info("Running MinIO...");
+                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
-            Runtime.getRuntime().exec("cmd /c start .\\executionFile\\minioStart.bat");
-            // Create a minioClient with the MinIO server playground, its access key and secret key.
-            wait(3000);
+            Thread.sleep(3000);
             MinioClient minioClient =
                     MinioClient.builder()
                             .endpoint("http://localhost:9000")
@@ -53,32 +84,18 @@ public class BootService {
             } else {
                 System.out.println("Bucket 'temperature1' already exists.");
             }
-
-//            minioClient.uploadObject(
-//                    UploadObjectArgs.builder()
-//                            .bucket("temperature1")
-//                            .object("data-t1.txt")
-//                            .filename("src/data-t1-2022.txt")
-//                            .build());
-//            System.out.println(
-//                    "'src/data-t1-2022.txt' is successfully uploaded as "
-//                            + "object 'data-t1.txt' to bucket 'temperature1'.");
-
         } catch (IOException e){
             e.printStackTrace();
         } catch (MinioException e) {
             System.out.println("Error occurred: " + e);
             System.out.println("HTTP trace: " + e.httpTrace());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void MinIOModuleTerminate() {
+        LOG.info("Terminating MinIO...");
         if(OsUtils.isWindows()){
             try {
                 Runtime.getRuntime().exec("cmd /c start .\\executionFile\\minioStop.bat");
@@ -88,7 +105,7 @@ public class BootService {
         }
         else{   //  OS: Linux or else
             try {
-                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/executionFile/minioStop.sh");
+                Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStop.sh");
 //                Runtime.getRuntime().exec("sh -c ./executionFile/minioStart.sh");
 //                Runtime.getRuntime().exec("gnome-terminal -x ./executionFile/minioStop.sh");
 

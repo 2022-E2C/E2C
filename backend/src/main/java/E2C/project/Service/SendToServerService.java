@@ -29,7 +29,6 @@ public class SendToServerService {
         /* SCP 클래스 생성 */
         SCPUtil scpUtil = new SCPUtil();
         scpUtil.init();
-//        scpUtil.init("127.0.0.1", "minioadmin", "root");
 
         if (!scpUtil.isInVaild()) {
             System.out.println("에러");
@@ -40,7 +39,7 @@ public class SendToServerService {
         /* -------- 처리 --------- */
         File file = null;
         try{
-            file= new File("./executionFile/data/Test_image.jpg");
+            file= new File("./backend/executionFile/data/Test_image.jpg");
         }   catch (Exception e){
             e.printStackTrace();
         }
@@ -74,9 +73,9 @@ public class SendToServerService {
                         DownloadObjectArgs.builder()
                                 .bucket("mdclmdclmdcl")
                                 .object("Test_image.jpg")
-                                .filename("./executionFile/data/Test_image.jpg")   //  put directory path with the file name to be downloaded.
+                                .filename("./backend/executionFile/data/Test_image.jpg")   //  put directory path with the file name to be downloaded.
                                 .build());
-                System.out.println("mdclmdclmdcl/Test_image.jpg is successfully downloaded to ./executionFile/data/Test_image.jpg");
+                System.out.println("mdclmdclmdcl/Test_image.jpg is successfully downloaded to ./backend/executionFile/data/Test_image.jpg");
             } catch (IllegalArgumentException e){
                 LOG.info("File Already Exists!");
                 LOG.info("Skipping File Download!");
@@ -86,38 +85,6 @@ public class SendToServerService {
             System.out.println("Error occurred: " + e);
         }
     }
-/*
-
-    public void GetObject() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        try {
-
-            // play.min.io for test and development.
-
-            MinioClient minioClient =
-                    MinioClient.builder()
-                            .endpoint("https://play.min.io")
-                            .credentials("Q3AM3UQ867SPQQA43P2F", "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG")
-                            .build();
-
-            // Get input stream to have content of 'my-objectname' from 'my-bucketname'
-            InputStream stream =
-                    minioClient.getObject(
-                            GetObjectArgs.builder().bucket("my-bucketname").object("my-objectname").build());
-
-            // Read the input stream and print to the console till EOF.
-            byte[] buf = new byte[16384];
-            int bytesRead;
-            while ((bytesRead = stream.read(buf, 0, buf.length)) >= 0) {
-                System.out.println(new String(buf, 0, bytesRead, StandardCharsets.UTF_8));
-            }
-
-            // Close the input stream.
-            stream.close();
-        } catch (MinioException e) {
-            System.out.println("Error occurred: " + e);
-        }
-    }
-*/
 
     public class SCPUtil {
         private Session session;
@@ -126,7 +93,7 @@ public class SendToServerService {
         private boolean inVaild = false;
 
         //여기에 .pem 파일의 절대경로를 지정한다.
-        private String keyname = "./src/main/resources/key/mdcl-key.pem";
+        private String keyname = "./backend/src/main/resources/key/mdcl-key.pem";
         //여기에 EC2 instance 도메인 주소를 적는다.
         private String publicDNS = "ec2-3-145-68-102.us-east-2.compute.amazonaws.com";
         public void init() throws JSchException {
@@ -148,11 +115,6 @@ public class SendToServerService {
                 session.setServerAliveInterval(120 * 1000);
                 session.setServerAliveCountMax(1000);
                 session.setConfig("TCPKeepAlive","yes");
-/*
-                Properties config = new Properties();
-                config.put("StrictHostKeyChecking", "no");
-                session.setConfig(config);
-*/
 
                 /* 세션 연결 */
                 session.connect();
