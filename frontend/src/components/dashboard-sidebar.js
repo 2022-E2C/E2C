@@ -28,7 +28,7 @@ const items = [
   //   title: 'Customers'
   // },
   {
-    href: "/products",
+    href: "/API",
     icon: <ShoppingBagIcon fontSize="small" />,
     title: "API",
   },
