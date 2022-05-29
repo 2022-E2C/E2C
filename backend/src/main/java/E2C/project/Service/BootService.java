@@ -67,31 +67,6 @@ public class BootService {
                 e.printStackTrace();
             }
         }
-
-        try {
-            Thread.sleep(3000);
-            MinioClient minioClient =
-                    MinioClient.builder()
-                            .endpoint("http://localhost:9000")
-                            .credentials(Id, password)
-                            .build();
-            // Make 'temperature1' bucket if not exist.
-            boolean found =
-                    minioClient.bucketExists(BucketExistsArgs.builder().bucket("temperature1").build());
-            if (!found) {
-                // Make a new bucket called 'temperature1'.
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket("temperature1").build());
-            } else {
-                System.out.println("Bucket 'temperature1' already exists.");
-            }
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (MinioException e) {
-            System.out.println("Error occurred: " + e);
-            System.out.println("HTTP trace: " + e.httpTrace());
-        } catch (NoSuchAlgorithmException | InvalidKeyException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void MinIOModuleTerminate() {
