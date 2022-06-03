@@ -16,10 +16,10 @@ export const MakeBucket = (props) => (
             MinIO Bucket
           </Typography>
           <Typography color="textPrimary" variant="h5">
-            Bucket
+            Create
           </Typography>
           <Typography color="textPrimary" variant="h5">
-            Generate
+            Bucket
           </Typography>
         </Grid>
         <Grid item>
