@@ -32,7 +32,7 @@ public class PipelineController {
         Thread.sleep(300);
         */
 
-        sendToServerService.MinIODataSendToServer();
+//        sendToServerService.MinIODataSendToServer();
     }
 
 
