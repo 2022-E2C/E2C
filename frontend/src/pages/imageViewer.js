@@ -32,33 +32,25 @@ const ImageViewer = () => {
     setIsDetected(!isDetected);
   };
 
-  const ImageGenerated = () => {
-    setIsImageGenerated(!isImageGenerated);
-  };
-
   const minioPipelineClick = () => {
     handleClick();
     setIsImageUpload(false);
-    axios.get("http://localhost:8080/pipeline");
-    setTimeout(() => {
-      axios.get("http://localhost:8080/images/Processed_Test_image").then((res) => {
-        console.log(res.data);
-        ImageGenerated();
-      });
-    }, 2000);
+    axios.get("http://localhost:8080/pipeline").then((res) => {
+      setTimeout(() => {
+        axios.get("http://localhost:8080/images/Processed_Test_image.jpg").then((res) => {
+          setIsImageGenerated(true);
+          setIsDetected(false);
+        });
+      }, 2000);
+    });
   };
 
   const uploadFile = (e) => {
     const image = e.target.files[0];
-    console.log(image);
-    // let formData = new FormData();
-    // const config = {
-    //   headers: { "Content-Type": "multipart/form-data" },
-    // };
-    // formData.append(image.name, image);
     const url = URL.createObjectURL(image);
     setPreview(url);
     setIsImageUpload(true);
+    setIsImageGenerated(false);
   };
 
   return (
@@ -150,7 +142,7 @@ const ImageViewer = () => {
                   <CardMedia
                     component="img"
                     height="100%"
-                    image="/static/images/minioLogo.png"
+                    src="http://localhost:8080/images/Processed_Test_image.jpg"
                     alt="green iguana"
                   />
                 ) : (
@@ -168,7 +160,3 @@ const ImageViewer = () => {
 ImageViewer.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default ImageViewer;
-
-{
-  /* <CircularProgress sx={{ m: "50%" }}></CircularProgress> */
-}

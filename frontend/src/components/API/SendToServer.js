@@ -4,7 +4,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const axios = require("axios");
 
 const minioBucketGenerateClick = () => {
-  axios.get("http://localhost:8080/makebk");
+  axios.get("http://localhost:8080/send-to-server");
 };
 
 export const SendToServer = (props) => (
