@@ -1,4 +1,5 @@
 import Head from "next/head";
+import React from "react";
 import {
   Box,
   Container,
@@ -10,19 +11,22 @@ import {
   CardMedia,
   CircularProgress,
   Alert,
-  Dialog,
   AlertTitle,
+  Dialog,
+  Input,
+  Divider,
 } from "@mui/material";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { Pipeline } from "../components/ImageViwer/Pipeline";
 import TimelineIcon from "@mui/icons-material/Timeline";
-import React from "react";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 
 const axios = require("axios");
 
 const ImageViewer = () => {
   const [isImageGenerated, setIsImageGenerated] = React.useState(false);
+  const [isImageUpload, setIsImageUpload] = React.useState(false);
   const [isDetected, setIsDetected] = React.useState(false);
+  const [preview, setPreview] = React.useState(undefined);
 
   const handleClick = () => {
     setIsDetected(!isDetected);
@@ -34,11 +38,27 @@ const ImageViewer = () => {
 
   const minioPipelineClick = () => {
     handleClick();
+    setIsImageUpload(false);
+    axios.get("http://localhost:8080/pipeline");
     setTimeout(() => {
-      axios.get("http://localhost:8080/pipeline").then((res) => {
+      axios.get("http://localhost:8080/images/Processed_Test_image").then((res) => {
+        console.log(res.data);
         ImageGenerated();
       });
-    }, 1000);
+    }, 2000);
+  };
+
+  const uploadFile = (e) => {
+    const image = e.target.files[0];
+    console.log(image);
+    // let formData = new FormData();
+    // const config = {
+    //   headers: { "Content-Type": "multipart/form-data" },
+    // };
+    // formData.append(image.name, image);
+    const url = URL.createObjectURL(image);
+    setPreview(url);
+    setIsImageUpload(true);
   };
 
   return (
@@ -58,8 +78,7 @@ const ImageViewer = () => {
             Image View
           </Typography>
           <Grid container spacing={3}>
-            {/* <Grid item lg={3} sm={4} xl={3} xs={4}> */}
-            <Grid item xs={4}>
+            <Grid item lg={3} md={3} sm={4} xs={12}>
               <Card sx={{ height: "50" }}>
                 <CardContent>
                   <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
@@ -75,7 +94,6 @@ const ImageViewer = () => {
                       <Button onClick={minioPipelineClick}>
                         <TimelineIcon
                           sx={{
-                            // backgroundColor: "error.main",
                             height: 56,
                             width: 56,
                           }}
@@ -84,9 +102,24 @@ const ImageViewer = () => {
                     </Grid>
                   </Grid>
                 </CardContent>
+                <Divider variant="middle" />
+                <Box sx={{ p: 2 }}>
+                  <label htmlFor="contained-button-file">
+                    <Button variant="contained" component="span" startIcon={<UploadFileIcon />}>
+                      Upload Image
+                      <Input
+                        type="file"
+                        accept=".png"
+                        id="contained-button-file"
+                        onChange={uploadFile}
+                        sx={{ display: "none" }}
+                      />
+                    </Button>
+                  </label>
+                </Box>
               </Card>
             </Grid>
-            <Grid item xs={8} sm={8}>
+            <Grid item lg={9} md={9} sm={8} xs={12}>
               <Dialog open={isDetected} onClose={handleClick}>
                 <Alert
                   severity="warning"
@@ -105,18 +138,25 @@ const ImageViewer = () => {
                   Detection is running...
                 </Alert>
               </Dialog>
-              {isImageGenerated ? (
-                <CardMedia
-                  component="img"
-                  height="100%"
-                  image="/static/images/minioLogo.png"
-                  alt="green iguana"
-                />
-              ) : (
-                <Card>
+              <Card>
+                {isImageUpload ? (
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    src={preview ? preview : ""}
+                    alt="green iguana"
+                  />
+                ) : isImageGenerated ? (
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    image="/static/images/minioLogo.png"
+                    alt="green iguana"
+                  />
+                ) : (
                   <CircularProgress sx={{ m: "50%" }}></CircularProgress>
-                </Card>
-              )}
+                )}
+              </Card>
             </Grid>
           </Grid>
         </Container>
@@ -128,3 +168,7 @@ const ImageViewer = () => {
 ImageViewer.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 
 export default ImageViewer;
+
+{
+  /* <CircularProgress sx={{ m: "50%" }}></CircularProgress> */
+}
