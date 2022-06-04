@@ -38,7 +38,7 @@ public class SendToServerService {
         /* -------- 처리 --------- */
         File file = null;
         try{
-            file= new File("./backend/executionFile/data/Processed_Test_image.jpg");
+            file= new File("/home/mdcl/IdeaProjects/E2C/backend/executionFile/data/Processed_Test_image.jpg");
         }   catch (Exception e){
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class SendToServerService {
         private boolean inVaild = false;
 
         //여기에 .pem 파일의 절대경로를 지정한다.
-        private String keyname = "./backend/src/main/resources/key/mdcl-key.pem";
+        private String keyname = "/home/mdcl/IdeaProjects/E2C/backend/src/main/resources/key/mdcl-key.pem";
         //여기에 EC2 instance 도메인 주소를 적는다.
         private String publicDNS = "ec2-3-145-68-102.us-east-2.compute.amazonaws.com";
         public void init() throws JSchException {

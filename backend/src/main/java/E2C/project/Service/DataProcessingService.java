@@ -42,6 +42,7 @@ public class DataProcessingService {
                     "gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/processStart.sh");
             Thread.sleep(500);
             Process p = Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/processStart.sh");
+            p.waitFor();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InterruptedException e) {

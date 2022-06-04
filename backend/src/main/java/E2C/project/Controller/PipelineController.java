@@ -30,7 +30,7 @@ public class PipelineController {
 
         //  Data Process Service
         dataProcessingService.MinIOImageProcess();
-        Thread.sleep(300);
+//        Thread.sleep(300);
 
         //  Send To Server Service
         sendToServerService.MinIODataSendToServer();
