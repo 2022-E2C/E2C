@@ -21,7 +21,6 @@ public class SendToServerService {
     private final static Logger LOG = Logger.getGlobal();
 
     public void MinIODataSendToServer() throws IOException, NoSuchAlgorithmException, InvalidKeyException, JSchException {
-        DownloadObject();
         SendObject();
     }
 
@@ -39,7 +38,7 @@ public class SendToServerService {
         /* -------- 처리 --------- */
         File file = null;
         try{
-            file= new File("./backend/executionFile/data/Test_image.jpg");
+            file= new File("/home/mdcl/IdeaProjects/E2C/backend/executionFile/data/Processed_Test_image.jpg");
         }   catch (Exception e){
             e.printStackTrace();
         }
@@ -53,34 +52,6 @@ public class SendToServerService {
         scpUtil = null;
     }
 
-    public void DownloadObject() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        try {
-            /* play.min.io for test and development. */
-            MinioClient minioClient =
-                    MinioClient.builder()
-                            .endpoint("https://localhost:9000")
-                            .credentials("minioadmin", "minioadmin")
-                            .build();
-
-            try{
-                // Download 'my-objectname' from 'my-bucketname' to 'my-filename'
-                minioClient.downloadObject(
-                        DownloadObjectArgs.builder()
-                                .bucket("mdclmdclmdcl")
-                                .object("Test_image.jpg")
-                                .filename("./backend/executionFile/data/Test_image.jpg")   //  put directory path with the file name to be downloaded.
-                                .build());
-                System.out.println("mdclmdclmdcl/Test_image.jpg is successfully downloaded to ./backend/executionFile/data/Test_image.jpg");
-            } catch (IllegalArgumentException e){
-                LOG.info("File Already Exists!");
-                LOG.info("Skipping File Download!");
-            }
-
-        } catch (MinioException e) {
-            System.out.println("Error occurred: " + e);
-        }
-    }
-
     public class SCPUtil {
         private Session session;
         private Channel channel;
@@ -88,7 +59,7 @@ public class SendToServerService {
         private boolean inVaild = false;
 
         //여기에 .pem 파일의 절대경로를 지정한다.
-        private String keyname = "./backend/src/main/resources/key/mdcl-key.pem";
+        private String keyname = "/home/mdcl/IdeaProjects/E2C/backend/src/main/resources/key/mdcl-key.pem";
         //여기에 EC2 instance 도메인 주소를 적는다.
         private String publicDNS = "ec2-3-145-68-102.us-east-2.compute.amazonaws.com";
         public void init() throws JSchException {
