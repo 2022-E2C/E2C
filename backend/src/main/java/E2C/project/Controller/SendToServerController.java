@@ -16,7 +16,7 @@ public class SendToServerController {
 
     private final SendToServerService sendToServerService;
 
-    @GetMapping("/sts")
+    @GetMapping("/send-to-server")
     public void sendToServer() throws IOException, NoSuchAlgorithmException, InvalidKeyException, JSchException {
         sendToServerService.MinIODataSendToServer();
     }
