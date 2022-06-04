@@ -21,7 +21,6 @@ public class SendToServerService {
     private final static Logger LOG = Logger.getGlobal();
 
     public void MinIODataSendToServer() throws IOException, NoSuchAlgorithmException, InvalidKeyException, JSchException {
-        DownloadObject();
         SendObject();
     }
 
@@ -39,7 +38,7 @@ public class SendToServerService {
         /* -------- 처리 --------- */
         File file = null;
         try{
-            file= new File("./backend/executionFile/data/Test_image.jpg");
+            file= new File("./backend/executionFile/data/Processed_Test_image.jpg");
         }   catch (Exception e){
             e.printStackTrace();
         }
@@ -51,34 +50,6 @@ public class SendToServerService {
         /* 세션 종료 및 파일 닫기 */
         scpUtil.disconnection();
         scpUtil = null;
-    }
-
-    public void DownloadObject() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
-        try {
-            /* play.min.io for test and development. */
-            MinioClient minioClient =
-                    MinioClient.builder()
-                            .endpoint("https://localhost:9000")
-                            .credentials("minioadmin", "minioadmin")
-                            .build();
-
-            try{
-                // Download 'my-objectname' from 'my-bucketname' to 'my-filename'
-                minioClient.downloadObject(
-                        DownloadObjectArgs.builder()
-                                .bucket("mdclmdclmdcl")
-                                .object("Test_image.jpg")
-                                .filename("./backend/executionFile/data/Test_image.jpg")   //  put directory path with the file name to be downloaded.
-                                .build());
-                System.out.println("mdclmdclmdcl/Test_image.jpg is successfully downloaded to ./backend/executionFile/data/Test_image.jpg");
-            } catch (IllegalArgumentException e){
-                LOG.info("File Already Exists!");
-                LOG.info("Skipping File Download!");
-            }
-
-        } catch (MinioException e) {
-            System.out.println("Error occurred: " + e);
-        }
     }
 
     public class SCPUtil {
