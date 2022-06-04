@@ -1,40 +1,37 @@
 import { Card, CardContent, Grid, Typography, Button } from "@mui/material";
-import SyncDisabledIcon from "@mui/icons-material/SyncDisabled";
+import BurstModeIcon from "@mui/icons-material/BurstMode";
 
 const axios = require("axios");
 
-const minioTerminateClick = () => {
-  axios.get("http://localhost:8080/terminate");
+const minioImageProcessingClick = () => {
+  axios.get("http://localhost:8080/process-image");
 };
 
-export const Terminate = (props) => (
+export const ImageProcessing = (props) => (
   <Card sx={{ height: "100%" }} {...props}>
     <CardContent>
       <Grid container sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="overline">
-            MinIO Server Down
+            Minio data processing
           </Typography>
           <Typography color="textPrimary" variant="h5">
-            Terminate
+            Process Data
           </Typography>
         </Grid>
         <Grid item>
-          <Button onClick={minioTerminateClick}>
-            <SyncDisabledIcon
+          <Button onClick={minioImageProcessingClick}>
+            <BurstModeIcon
               sx={{
                 // backgroundColor: "warning.main",
                 height: 50,
-                width: 45,
-                color: "red",
+                width: 40,
+                color: "blue",
               }}
-            ></SyncDisabledIcon>
+            ></BurstModeIcon>
           </Button>
         </Grid>
       </Grid>
-      {/* <Box sx={{ pt: 3 }}>
-        <LinearProgress value={75.5} variant="determinate" />
-      </Box> */}
     </CardContent>
   </Card>
 );
