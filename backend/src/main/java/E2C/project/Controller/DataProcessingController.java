@@ -18,7 +18,7 @@ public class DataProcessingController {
 
     private final DataProcessingService dataProcessingService;
 
-    @GetMapping("/processImage")
+    @GetMapping("/process-image")
     public @ResponseBody void process() throws IOException, NoSuchAlgorithmException, InvalidKeyException {
         dataProcessingService.MinIOImageProcess();
     }
