@@ -29,11 +29,11 @@ public class PipelineController {
         Thread.sleep(300);
 
         //  Data Process Service
-        dataProcessingService.MinIOImageProcess();
+//        dataProcessingService.MinIOImageProcess();
 //        Thread.sleep(300);
 
         //  Send To Server Service
-        sendToServerService.MinIODataSendToServer();
+//        sendToServerService.MinIODataSendToServer();
     }
 
 

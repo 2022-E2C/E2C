@@ -1,5 +1,6 @@
 package E2C.project.Config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -8,7 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private String connectPath = "/images/**";
-    private String resourcePath = "file:///home/mdcl/IdeaProjects/E2C/backend/executionFile/data/";
+    @Value("${Window_local_image_path}")
+    private String resourcePath;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

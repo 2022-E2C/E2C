@@ -162,7 +162,7 @@ sketch
 
 #minIO
 backend/executionFile/**.exe
-backend/executionFile/Data/**
+backend/executionFile/data/**
 
 #  key files
 backend/src/main/resources/key/*.pem
