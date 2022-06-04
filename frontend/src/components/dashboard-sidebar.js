@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { Box, Button, Divider, Drawer, Typography, useMediaQuery, Avatar } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import ImageSearchIcon from "@mui/icons-material/ImageSearch";
 import { ChartBar as ChartBarIcon } from "../icons/chart-bar";
 import { Cog as CogIcon } from "../icons/cog";
 import { Lock as LockIcon } from "../icons/lock";
@@ -15,6 +16,7 @@ import { Users as UsersIcon } from "../icons/users";
 import { XCircle as XCircleIcon } from "../icons/x-circle";
 import { Logo } from "./logo";
 import { NavItem } from "./nav-item";
+import { Buckets } from "./dashboard/bucketList";
 
 const items = [
   {
@@ -22,26 +24,31 @@ const items = [
     icon: <ChartBarIcon fontSize="small" />,
     title: "Dashboard",
   },
-  // {
-  //   href: '/customers',
-  //   icon: (<UsersIcon fontSize="small" />),
-  //   title: 'Customers'
-  // },
   {
     href: "/API",
     icon: <ShoppingBagIcon fontSize="small" />,
     title: "API",
   },
+  {
+    href: "/imageViewer",
+    icon: <ImageSearchIcon fontSize="small" />,
+    title: "ImageViewer",
+  },
+  // {
+  //   href: "/customers",
+  //   icon: <UsersIcon fontSize="small" />,
+  //   title: "Customers",
+  // },
   // {
   //   href: "/account",
   //   icon: <UserIcon fontSize="small" />,
   //   title: "Account",
   // },
-  {
-    href: "/settings",
-    icon: <CogIcon fontSize="small" />,
-    title: "Settings",
-  },
+  // {
+  //   href: "/settings",
+  //   icon: <CogIcon fontSize="small" />,
+  //   title: "Settings",
+  // },
   // {
   //   href: "/login",
   //   icon: <LockIcon fontSize="small" />,
@@ -90,51 +97,34 @@ export const DashboardSidebar = (props) => {
           height: "100%",
         }}
       >
-        <div>
-          <Box sx={{ p: 3 }}>
-            <NextLink href="/" passHref>
-              <a>
-                <img src="../icons/minioLogo.jpg" />
-                {/* <Logo
-                  sx={{
-                    height: 60,
-                    width: 60,
-                  }}
-                /> */}
-              </a>
-            </NextLink>
+        <Box
+          sx={{
+            p: 1,
+          }}
+        ></Box>
+        <Box sx={{ px: 2 }}>
+          <Box
+            sx={{
+              alignItems: "center",
+              backgroundColor: "rgba(255, 255, 255, 0.04)",
+              cursor: "pointer",
+              display: "flex",
+              justifyContent: "space-between",
+              px: 2,
+              py: 2,
+              borderRadius: 1,
+            }}
+          >
+            <div>
+              <Typography color="inherit" variant="subtitle1">
+                Minio Administrator
+              </Typography>
+              <Typography color="neutral.400" variant="body2">
+                minio console
+              </Typography>
+            </div>
           </Box>
-          <Box sx={{ px: 2 }}>
-            {/* <Box
-              sx={{
-                alignItems: "center",
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-                cursor: "pointer",
-                display: "flex",
-                justifyContent: "space-between",
-                px: 3,
-                py: "11px",
-                borderRadius: 1,
-              }}
-            > */}
-            {/* <div>
-                <Typography color="inherit" variant="subtitle1">
-                  Acme Inc
-                </Typography>
-                <Typography color="neutral.400" variant="body2">
-                  Your tier : Premium
-                </Typography>
-              </div> */}
-            {/* <SelectorIcon
-                sx={{
-                  color: "neutral.500",
-                  width: 14,
-                  height: 14,
-                }}
-              /> */}
-            {/* </Box> */}
-          </Box>
-        </div>
+        </Box>
         <Divider
           sx={{
             borderColor: "#2D3748",

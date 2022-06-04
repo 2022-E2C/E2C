@@ -47,7 +47,6 @@ public class BootService {
             }
             try {
                 Runtime.getRuntime().exec("cmd /c start .\\executionFile\\minioStart.bat");
-                // Create a minioClient with the MinIO server playground, its access key and secret key.
 
             } catch (IOException e){
                 e.printStackTrace();
@@ -62,7 +61,8 @@ public class BootService {
             }
             try {
                 LOG.info("Running MinIO...");
-                Runtime.getRuntime().exec("gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
+                Runtime.getRuntime().exec(
+                        "gnome-terminal -- chmod +x /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
                 Thread.sleep(500);
                 Runtime.getRuntime().exec("gnome-terminal -- /home/mdcl/IdeaProjects/E2C/backend/executionFile/minioStart.sh");
             } catch (IOException e) {

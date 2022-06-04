@@ -19,7 +19,7 @@ export const Boot = (props) => (
             MiNIO SERVER RUN
           </Typography>
           <Typography color="textPrimary" variant="h5">
-            Booting
+            Boot
           </Typography>
         </Grid>
         <Grid item>

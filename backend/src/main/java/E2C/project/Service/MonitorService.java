@@ -1,7 +1,7 @@
 package E2C.project.Service;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import E2C.project.domain.BucketDto;
+import E2C.project.domain.ObjectDto;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.Result;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -30,7 +31,7 @@ public class MonitorService {
     @Value("${minio.password}")
     private String password;
 
-    public List<Bucket> MinIOGetBucketList() {
+    public List<BucketDto> MinIOGetBucketList() {
 
         MinioClient minioClient =
                 MinioClient.builder()
@@ -39,21 +40,51 @@ public class MonitorService {
                         .build();
 
         List<Bucket> bucketList;
+        List<BucketDto> bucketInfoList;
         try{
+            // Get minio bucket list
             bucketList = minioClient.listBuckets();
+            bucketInfoList = new ArrayList<>();
+
+            // Generate bucket list
+            for (Bucket bucket : bucketList) {
+                List<ObjectDto> objectList = new ArrayList<>();
+                String name = bucket.name();
+
+                // Get Minio objects of bucket
+                Iterable<Result<Item>> objects = minioClient.listObjects
+                        (ListObjectsArgs.builder().bucket(name).build());
+
+                // Generate object list
+                for (Result<Item> result : objects) {
+                    Item item = result.get();
+                    objectList.add(ObjectDto.builder()
+                            .name(item.objectName())
+                            .lastModified(item.lastModified())
+                            .size(item.size())
+                            .build());
+                    System.out.println(item.lastModified() + "\t" + item.size() + "\t" + item.objectName());
+                }
+
+                // Generate bucket & object Info
+                bucketInfoList.add(BucketDto.builder()
+                        .name(name)
+                        .createdTime(bucket.creationDate())
+                        .objects(objectList)
+                        .objectNumber(objectList.size())
+                        .build());
+
+                System.out.println(bucket.creationDate() + ", " + bucket.name());
+            }
         } catch (ServerException | InsufficientDataException | ErrorResponseException | IOException |
                  NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException |
                  InternalException e) {
             throw new RuntimeException(e);
         }
-        for (Bucket bucket : bucketList) {
-            System.out.println(bucket.creationDate() + ", " + bucket.name());
-        }
-
-        return bucketList;
+        return bucketInfoList;
     }
 
-    public Result<Item> MinIOGetObjectList() {
+    public List<ObjectDto> MinIOGetObjectList(String BucketName) {
 
         MinioClient minioClient =
                 MinioClient.builder()
@@ -62,11 +93,19 @@ public class MonitorService {
                         .build();
 
         // Lists objects information.
-        Iterable<Result<Item>> results =
-                minioClient.listObjects(ListObjectsArgs.builder().bucket("images1").build());
+        List<ObjectDto> objectList = new ArrayList<>();
+
         try {
+            Iterable<Result<Item>> results =
+                minioClient.listObjects(ListObjectsArgs.builder().bucket(BucketName).build());
             for (Result<Item> result : results) {
                 Item item = result.get();
+                objectList.add(ObjectDto.builder()
+                        .name(item.objectName())
+                        .lastModified(item.lastModified())
+                        .size(item.size())
+                        .build());
+
                 System.out.println(item.lastModified() + "\t" + item.size() + "\t" + item.objectName());
             }
         } catch (ServerException | InsufficientDataException | ErrorResponseException | IOException |
@@ -75,6 +114,6 @@ public class MonitorService {
             throw new RuntimeException(e);
         }
 
-        return (Result<Item>) results;
+        return objectList;
     }
 }

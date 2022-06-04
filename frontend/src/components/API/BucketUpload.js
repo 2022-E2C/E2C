@@ -19,6 +19,9 @@ export const BucketUpload = (props) => (
           <Typography color="textPrimary" variant="h5">
             Upload Data
           </Typography>
+          <Typography color="textPrimary" variant="h5">
+            To Bucket
+          </Typography>
         </Grid>
         <Grid item>
           <Button onClick={minioBucketUploadClick}>
