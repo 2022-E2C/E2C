@@ -1,75 +1,73 @@
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { MinioBuckets } from "../components/dashboard/minio-buckets";
-import { LatestProducts } from "../components/dashboard/latest-products";
-import { Sales } from "../components/dashboard/sales";
-import { TotalCustomers } from "../components/API/total-customers";
-import { TotalProfit } from "../components/dashboard/total-profit";
-import { TrafficByDevice } from "../components/dashboard/traffic-by-device";
+import { DiskUsage } from "../components/dashboard/DiskUsage";
 import { DashboardLayout } from "../components/dashboard-layout";
-import { ProductListToolbar } from "../components/product/product-list-toolbar";
-import { Buckets } from "../components/dashboard/bucketList";
 
 const axios = require("axios");
 
-function minioBucktsInfo() {
-  axios
-    .get("http://localhost:8080/bucket-detail-page")
-    .then((res) => {
-      // this.setBuckets({
-      //   bucketList: res.data,
-      // });
-      // this.setState({
-      //   bucketList: res.data,
-      // });
-      Buckets.list = res.data;
-      console.log(Buckets.list);
-    })
-    .catch((e) => {
-      console.error(e);
-    });
-}
+const Dashboard = () => {
+  const [buckets, setBuckets] = useState([]);
+  // const [minioUsage, setMinioUsage] = React.useState(0);
+  const [diskCapacity, setDiskCapacity] = useState(0);
+  const [minioCapacity, setMinioCapacity] = useState(0);
+  const [diskRate, setDiskRate] = useState(0);
+  const [minioRate, setMinioRate] = useState(0);
 
-const Dashboard = () => (
-  <>
-    <Head>
-      <title>Dashboard | Material Kit</title>
-    </Head>
-    <Box
-      component="main"
-      sx={{
-        flexGrow: 1,
-        py: 2,
-      }}
-    >
-      <Container maxWidth={false}>
-        <Typography sx={{ m: 2 }} variant="h4">
-          Disk
-        </Typography>
-        <Grid container spacing={3}>
-          {/* <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TotalCustomers />
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/bucket-detail-page")
+      .then((res) => {
+        setBuckets(res.data.bucketList);
+
+        // setMinioCapacity(props.usage.minioUsage / 1000000); //추후 GB로 계산
+        // setDiskCapacity(256); // 256GB 예시
+        // 보여주기 위한 데이터 수정 (disk - 100MB, minioSize - 2.2MB)
+        const minioUsage = res.data.minioUsage / 100;
+        const diskUsage = 100;
+        setMinioCapacity(minioUsage);
+        setDiskCapacity(diskUsage);
+        setDiskRate(((diskUsage / (diskUsage + minioUsage)) * 100).toFixed(1));
+        setMinioRate(((minioUsage / (diskUsage + minioUsage)) * 100).toFixed(1));
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  return (
+    <>
+      <Head>
+        <title>Dashboard | Material Kit</title>
+      </Head>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 2,
+        }}
+      >
+        <Container maxWidth={false}>
+          <Typography sx={{ m: 2 }} variant="h4">
+            Disk
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item lg={4} md={6} xl={3} xs={12}>
+              <DiskUsage
+                sx={{ height: "100%" }}
+                usage={{ diskCapacity, minioCapacity, diskRate, minioRate }}
+              />
+            </Grid>
+            <Grid item lg={8} md={12} xl={9} xs={12}>
+              <MinioBuckets list={{ buckets }} />
+            </Grid>
           </Grid>
-          <Grid item xl={3} lg={3} sm={6} xs={12}>
-            <TotalProfit sx={{ height: "100%" }} />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <Sales />
-          </Grid> */}
-          {/* <Grid item lg={4} md={6} xl={3} xs={12}>
-            <LatestProducts sx={{ height: "100%" }} />
-          </Grid> */}
-          <Grid item lg={4} md={6} xl={3} xs={12}>
-            <TrafficByDevice sx={{ height: "100%" }} />
-          </Grid>
-          <Grid item lg={8} md={12} xl={9} xs={12}>
-            <MinioBuckets />
-          </Grid>
-        </Grid>
-      </Container>
-    </Box>
-  </>
-);
+        </Container>
+      </Box>
+    </>
+  );
+};
 
 Dashboard.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>;
 

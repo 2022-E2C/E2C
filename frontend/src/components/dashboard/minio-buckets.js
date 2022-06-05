@@ -15,32 +15,11 @@ import {
   Tooltip,
 } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { SeverityPill } from "../severity-pill";
-import { render } from "nprogress";
-import { TextSnippet } from "@mui/icons-material";
-import React, { useState, useEffect, Component } from "react";
 import _ from "lodash";
-import { is } from "date-fns/locale";
-
-const axios = require("axios");
 
 export const MinioBuckets = (props) => {
-  const [Buckets, setBuckets] = React.useState([]);
-  function minioBucktsInfo() {
-    setTimeout(() => {
-      axios
-        .get("http://localhost:8080/bucket-detail-page")
-        .then((res) => {
-          setBuckets(res.data);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    }, 5000);
-  }
-
   return (
-    <Card {...props} render={minioBucktsInfo()}>
+    <Card {...props}>
       <CardHeader title="Bucket List" />
       <PerfectScrollbar>
         <Box sx={{ minWidth: 800 }}>
@@ -60,26 +39,7 @@ export const MinioBuckets = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {orders.map((order) => (
-//               <TableRow hover key={order.id}>
-//                 <TableCell>{order.ref}</TableCell>
-//                 <TableCell>{order.customer.name}</TableCell>
-//                 <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
-//                 <TableCell>
-//                   <Button onClick={minioBucktsInfo}></Button>
-//                   <SeverityPill
-//                     color={
-//                       (order.Authority === "Read/Write" && "success") ||
-//                       (order.Authority === "Read/Only" && "warning") ||
-//                       "error"
-//                     }
-//                   >
-//                     {order.Authority}
-//                   </SeverityPill>
-//                 </TableCell>
-//               </TableRow>
-//             ))} */}
-              {Buckets.map((bucket) => (
+              {props.list.buckets.map((bucket) => (
                 <TableRow hover key={uuid()}>
                   <TableCell>{bucket.name}</TableCell>
                   <TableCell>{bucket.objectNumber}</TableCell>

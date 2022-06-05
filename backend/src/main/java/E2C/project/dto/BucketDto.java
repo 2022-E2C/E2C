@@ -1,7 +1,6 @@
-package E2C.project.domain;
+package E2C.project.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import io.minio.messages.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

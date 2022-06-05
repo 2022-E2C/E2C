@@ -1,17 +1,17 @@
 import { Doughnut } from "react-chartjs-2";
 import { Box, Card, CardContent, CardHeader, Divider, Typography, useTheme } from "@mui/material";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
-import PhoneIcon from "@mui/icons-material/Phone";
-import TabletIcon from "@mui/icons-material/Tablet";
 import CloudQueueIcon from "@mui/icons-material/CloudQueue";
+import { useEffect, useState } from "react";
+import { render } from "nprogress";
 
-export const TrafficByDevice = (props) => {
+export const DiskUsage = (props) => {
   const theme = useTheme();
 
   const data = {
     datasets: [
       {
-        data: [98, 2],
+        data: [props.usage.diskCapacity, props.usage.minioCapacity],
         backgroundColor: ["#3F51B5", "#e53935"],
         borderWidth: 8,
         borderColor: "#FFFFFF",
@@ -46,13 +46,13 @@ export const TrafficByDevice = (props) => {
   const devices = [
     {
       title: "Disk",
-      value: 98,
+      value: props.usage.diskRate,
       icon: LaptopMacIcon,
       color: "#3F51B5",
     },
     {
       title: "MinIO",
-      value: 2,
+      value: props.usage.minioRate,
       icon: CloudQueueIcon,
       color: "#E53935",
     },

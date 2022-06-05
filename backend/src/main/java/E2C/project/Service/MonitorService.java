@@ -1,7 +1,8 @@
 package E2C.project.Service;
 
-import E2C.project.domain.BucketDto;
-import E2C.project.domain.ObjectDto;
+import E2C.project.dto.BucketDto;
+import E2C.project.dto.BucketInfoDTO;
+import E2C.project.dto.ObjectDto;
 import io.minio.ListObjectsArgs;
 import io.minio.MinioClient;
 import io.minio.Result;
@@ -9,6 +10,8 @@ import io.minio.errors.*;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -31,7 +34,8 @@ public class MonitorService {
     @Value("${minio.password}")
     private String password;
 
-    public List<BucketDto> MinIOGetBucketList() {
+    public BucketInfoDTO MinIOGetBucketList() {
+        double minioUsage = 0;
 
         MinioClient minioClient =
                 MinioClient.builder()
@@ -41,6 +45,8 @@ public class MonitorService {
 
         List<Bucket> bucketList;
         List<BucketDto> bucketInfoList;
+        BucketInfoDTO minioInfo;
+
         try{
             // Get minio bucket list
             bucketList = minioClient.listBuckets();
@@ -58,6 +64,7 @@ public class MonitorService {
                 // Generate object list
                 for (Result<Item> result : objects) {
                     Item item = result.get();
+                    minioUsage += item.size();
                     objectList.add(ObjectDto.builder()
                             .name(item.objectName())
                             .lastModified(item.lastModified())
@@ -74,14 +81,23 @@ public class MonitorService {
                         .objectNumber(objectList.size())
                         .build());
 
-                System.out.println(bucket.creationDate() + ", " + bucket.name());
+                // bucket total size
+                System.out.println(bucket.creationDate() + ", " + bucket.name());   // bucket log
             }
+            // KB 단위 변환,
+            minioUsage = (Math.round(minioUsage/100))/10.0;
+            minioInfo = BucketInfoDTO.builder().
+//                    minioUsage(Math.round(minioUsage)/(long) 10.0).
+                    minioUsage(minioUsage).
+                    bucketList(bucketInfoList)
+                    .build();
+
         } catch (ServerException | InsufficientDataException | ErrorResponseException | IOException |
                  NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException |
                  InternalException e) {
             throw new RuntimeException(e);
         }
-        return bucketInfoList;
+        return minioInfo;
     }
 
     public List<ObjectDto> MinIOGetObjectList(String BucketName) {
