@@ -1,8 +1,9 @@
 package E2C.project.Controller;
 
 import E2C.project.Service.MonitorService;
-import E2C.project.domain.BucketDto;
-import E2C.project.domain.ObjectDto;
+import E2C.project.dto.BucketDto;
+import E2C.project.dto.BucketInfoDTO;
+import E2C.project.dto.ObjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +18,13 @@ public class MoniterController {
 
     private final MonitorService monitorService;
 
-    @GetMapping("bucket-detail-page")
-    public ResponseEntity<List<BucketDto>> giveBucketInformation(){
+    @GetMapping("/bucket-detail-page")
+//    public ResponseEntity<List<BucketDto>> giveBucketInformation(){
+    public ResponseEntity<BucketInfoDTO> giveBucketInformation(){
         return ResponseEntity.ok(monitorService.MinIOGetBucketList());
     }
 
-    @GetMapping("object-detail-page")
+    @GetMapping("/object-detail-page")
     public ResponseEntity<List<ObjectDto>> giveObjectInformation(@RequestParam String bucketName){
         return ResponseEntity.ok(monitorService.MinIOGetObjectList(bucketName));
     }

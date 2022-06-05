@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
@@ -13,34 +12,30 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
+  Menu,
+  MenuItem,
+  Fade,
 } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import { SeverityPill } from "../severity-pill";
-import { render } from "nprogress";
-import { TextSnippet } from "@mui/icons-material";
-import React, { useState, useEffect, Component } from "react";
 import _ from "lodash";
-import { is } from "date-fns/locale";
-
-const axios = require("axios");
+import Moment from "moment";
+import "moment/locale/ko";
+import React, { useState } from "react";
 
 export const MinioBuckets = (props) => {
-  const [Buckets, setBuckets] = React.useState([]);
-  function minioBucktsInfo() {
-    setTimeout(() => {
-      axios
-        .get("http://localhost:8080/bucket-detail-page")
-        .then((res) => {
-          setBuckets(res.data);
-        })
-        .catch((e) => {
-          console.error(e);
-        });
-    }, 5000);
-  }
+  const [anchorEl, setanchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setanchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setanchorEl(null);
+  };
 
   return (
-    <Card {...props} render={minioBucktsInfo()}>
+    <Card {...props}>
       <CardHeader title="Bucket List" />
       <PerfectScrollbar>
         <Box sx={{ minWidth: 800 }}>
@@ -56,35 +51,48 @@ export const MinioBuckets = (props) => {
                     </TableSortLabel>
                   </Tooltip>
                 </TableCell>
-                <TableCell>Access Authority</TableCell>
+                <TableCell>Object List</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {orders.map((order) => (
-//               <TableRow hover key={order.id}>
-//                 <TableCell>{order.ref}</TableCell>
-//                 <TableCell>{order.customer.name}</TableCell>
-//                 <TableCell>{format(order.createdAt, "dd/MM/yyyy")}</TableCell>
-//                 <TableCell>
-//                   <Button onClick={minioBucktsInfo}></Button>
-//                   <SeverityPill
-//                     color={
-//                       (order.Authority === "Read/Write" && "success") ||
-//                       (order.Authority === "Read/Only" && "warning") ||
-//                       "error"
-//                     }
-//                   >
-//                     {order.Authority}
-//                   </SeverityPill>
-//                 </TableCell>
-//               </TableRow>
-//             ))} */}
-              {Buckets.map((bucket) => (
-                <TableRow hover key={uuid()}>
+              {props.list.buckets.map((bucket) => (
+                <TableRow hover key={bucket.name}>
                   <TableCell>{bucket.name}</TableCell>
                   <TableCell>{bucket.objectNumber}</TableCell>
-                  <TableCell>{bucket.createdTime}</TableCell>
-                  <TableCell>{bucket.objects.map((object) => object.name)}</TableCell>
+                  <TableCell>{Moment(bucket.createdTime).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                  <TableCell>
+                    <Button
+                      id="fade-button"
+                      aria-controls={open ? "fade-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      variant="contained"
+                      disableElevation
+                    >
+                      Object List
+                    </Button>
+                    <Menu
+                      key={bucket.name}
+                      id="fade-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "fade-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      {bucket.objects.map((object) =>
+                        object ? (
+                          <MenuItem key={object.name} onClick={handleClose}>
+                            {object.name}
+                          </MenuItem>
+                        ) : (
+                          <div></div>
+                        )
+                      )}
+                    </Menu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

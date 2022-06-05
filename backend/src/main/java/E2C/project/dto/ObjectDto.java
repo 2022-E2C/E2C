@@ -1,8 +1,7 @@
-package E2C.project.domain;
+package E2C.project.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
