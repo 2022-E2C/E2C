@@ -11,7 +11,7 @@ const minioBucketUploadClick = () => {
 export const BucketUpload = (props) => (
   <Card sx={{ height: "100%" }} {...props}>
     <CardContent>
-      <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
+      <Grid container sx={{ justifyContent: "space-between" }}>
         <Grid item>
           <Typography color="textSecondary" gutterBottom variant="overline">
             MinIO BUCKET
