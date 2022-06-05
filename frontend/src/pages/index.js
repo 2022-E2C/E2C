@@ -24,9 +24,9 @@ const Dashboard = () => {
 
         // setMinioCapacity(props.usage.minioUsage / 1000000); //추후 GB로 계산
         // setDiskCapacity(256); // 256GB 예시
-        // 보여주기 위한 데이터 수정 (disk - 100MB, minioSize - 2.2MB)
-        const minioUsage = res.data.minioUsage / 100;
-        const diskUsage = 100;
+        // 보여주기 위한 데이터 수정 (disk - 256GB, minio에는 기본 3.8G data 존재)
+        const minioUsage = res.data.minioUsage / 1000000;
+        const diskUsage = 256;
         setMinioCapacity(minioUsage);
         setDiskCapacity(diskUsage);
         setDiskRate(((diskUsage / (diskUsage + minioUsage)) * 100).toFixed(1));
