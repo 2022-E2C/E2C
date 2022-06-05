@@ -20,6 +20,7 @@ const Dashboard = () => {
       .get("http://localhost:8080/bucket-detail-page")
       .then((res) => {
         setBuckets(res.data.bucketList);
+        console.log(res.data);
 
         // setMinioCapacity(props.usage.minioUsage / 1000000); //추후 GB로 계산
         // setDiskCapacity(256); // 256GB 예시

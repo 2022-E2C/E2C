@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import { v4 as uuid } from "uuid";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import {
@@ -13,11 +12,28 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
+  Menu,
+  MenuItem,
+  Fade,
 } from "@mui/material";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import _ from "lodash";
+import Moment from "moment";
+import "moment/locale/ko";
+import React, { useState } from "react";
 
 export const MinioBuckets = (props) => {
+  const [anchorEl, setanchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setanchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setanchorEl(null);
+  };
+
   return (
     <Card {...props}>
       <CardHeader title="Bucket List" />
@@ -35,16 +51,48 @@ export const MinioBuckets = (props) => {
                     </TableSortLabel>
                   </Tooltip>
                 </TableCell>
-                <TableCell>Access Authority</TableCell>
+                <TableCell>Object List</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {props.list.buckets.map((bucket) => (
-                <TableRow hover key={uuid()}>
+                <TableRow hover key={bucket.name}>
                   <TableCell>{bucket.name}</TableCell>
                   <TableCell>{bucket.objectNumber}</TableCell>
-                  <TableCell>{bucket.createdTime}</TableCell>
-                  <TableCell>{bucket.objects.map((object) => object.name)}</TableCell>
+                  <TableCell>{Moment(bucket.createdTime).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                  <TableCell>
+                    <Button
+                      id="fade-button"
+                      aria-controls={open ? "fade-menu" : undefined}
+                      aria-expanded={open ? "true" : undefined}
+                      aria-haspopup="true"
+                      onClick={handleClick}
+                      variant="contained"
+                      disableElevation
+                    >
+                      Object List
+                    </Button>
+                    <Menu
+                      key={bucket.name}
+                      id="fade-menu"
+                      MenuListProps={{
+                        "aria-labelledby": "fade-button",
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                    >
+                      {bucket.objects.map((object) =>
+                        object ? (
+                          <MenuItem key={object.name} onClick={handleClose}>
+                            {object.name}
+                          </MenuItem>
+                        ) : (
+                          <div></div>
+                        )
+                      )}
+                    </Menu>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
